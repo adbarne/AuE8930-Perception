@@ -2,16 +2,17 @@ import numpy as np
 from numpy import sqrt, exp, pi
 import matplotlib.pyplot as plt
 
-# def gaussian(mu, sigma):
-# 	# define probability density function (PDF)
-# 	sigrange = 6						# how many standard deviations to range the PDF			
-# 	PDFdom = np.arange(-sigrange*sigma, sigrange*sigma, (2*sigrange*sigma)/500) 
-# 	pdf = 1/(sqrt(2*pi*sigma**2))*exp(-(PDFdom-mu)**2/(2*sigma**2))
-	
-# 	return PDFdom, pdf
+def convolution(noise, kernel):
+	# establish length for empty convolution array
+	C = np.zeros(len(noise) + len(kernel) - 1)
+	for i in range(len(noise)):
+		for j in range(len(kernel)):
+			C[i+j] = C[i+j] + noise[i]*kernel[j]
+	# reshape convolution array
+	C = C[1:500]
+	return C
 
 # define variables for probability density function
-
 mean = 0
 var = 1
 std = sqrt(var)
@@ -24,18 +25,40 @@ x = []
 for i in range(len(k)):  
 	x.append(20)
 
-# n = gaussian(mean, std)
-# print(n)
 n = np.random.normal(mean, std, len(k))
 xp = x + n
-xp_fft = np.fft.fft(xp)
-freq = np.fft.fftfreq(len(xp_fft))
+# establish gaussian kernels 
+hk3 = [0.27901, 0.44198, 0.27901] 			
+hk11 = [0.000003, 0.000229, 0.005977, 0.060598, 0.24173, 0.382925, 0.24173, 0.060598, 0.005977, 0.000229, 0.000003]
+c3 = convolution(n,hk3)
+c11 = convolution(n,hk11)
+
+# calculate x'(k) = x(k) + gaussian smoothed noise
+xp3 = x + c3
+xp11 = x + c11
+
+
+
 
 # a) Visualize both x(k) and xp(k) in one figure
 plt.figure()
 plt.plot(k,xp,k,x)
 plt.title('Visualize x(k) and xp(k)')
 plt.xlabel('k')
+plt.ylabel('Amplitude')
+
+# b) visualize both x(k) and y(k) in one figure with kernel size 3
+plt.figure()
+plt.plot(k,xp3,k,x)
+plt.title('b) Visualize x(k) and y(k) with 1x3 Normalized Kernel')
+plt.xlabel('sigma')
+plt.ylabel('Amplitude')
+
+# c) visualize both x(k) and y(k) in one figure with kernel size 11
+plt.figure()
+plt.plot(k,xp11,k,x)
+plt.title('c) Visualize x(k) and y(k) with 1x11 Normalized Kernel')
+plt.xlabel('sigma')
 plt.ylabel('Amplitude')
 
 plt.show()
