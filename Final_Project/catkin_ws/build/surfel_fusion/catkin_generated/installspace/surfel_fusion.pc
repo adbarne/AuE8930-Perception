@@ -1,0 +1,8 @@
+prefix=/home/drew/SCHOOL/AuE8930-Perception/Final_Project/catkin_ws/install
+
+Name: surfel_fusion
+Description: Description of surfel_fusion
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 

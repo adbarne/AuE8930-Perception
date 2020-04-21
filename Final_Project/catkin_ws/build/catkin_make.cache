@@ -1,0 +1,2 @@
+kitti_publisher:surfel_fusion
+-DCATKIN_DEVEL_PREFIX=/home/drew/SCHOOL/AuE8930-Perception/Final_Project/catkin_ws/devel -DCMAKE_INSTALL_PREFIX=/home/drew/SCHOOL/AuE8930-Perception/Final_Project/catkin_ws/install -G Unix Makefiles
